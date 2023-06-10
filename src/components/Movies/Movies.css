@@ -1,11 +1,11 @@
-.more-movies {
+.movies__more {
   max-width: 1280px;
   margin: auto;
   display: flex;
   justify-content: center;
 }
 
-.more-movies__button {
+.movies__more-button {
   background-color: #ffffff;
   width: 320px;
   height: 36px;
@@ -20,11 +20,11 @@
   line-height: 15px;
 }
 
-.more-movies__button:hover {
+.movies__more-button:hover {
   cursor: pointer;
   opacity: 0.8;
 }
 
-.more-movies__button:active {
+.movies__more-button:active {
   background-color: #f9f9f9;
 }

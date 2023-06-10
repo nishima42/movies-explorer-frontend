@@ -5,9 +5,9 @@ import logo from "../../images/ME-logo.svg";
 function Register(props) {
   return (
     <>
-      <header className="login-header">
-        <img className="header__logo" alt="Логотип сайта" src={logo} />
-        <h1 className="login-header__title">Добро пожаловать!</h1>
+      <header className="register__header">
+        <img className="register__logo" alt="Логотип сайта" src={logo} />
+        <h1 className="register__title">Добро пожаловать!</h1>
       </header>
       <section class="register">
         <form class="register__form">

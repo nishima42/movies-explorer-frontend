@@ -1,4 +1,4 @@
-.movies__movie-card {
+.movies-card {
   max-width: 364px;
   max-height: 271px;
   display: flex;
@@ -7,11 +7,11 @@
   background-color: #fdfdfd;
 }
 
-.movies__movie-card:hover {
+.movies-card:hover {
   cursor: pointer;
 }
 
-.movies__movie-container {
+.movies-card__container {
   display: flex;
   width: calc(100% - 28px);
   justify-content: space-between;
@@ -19,7 +19,7 @@
   margin: 0 auto;
 }
 
-.movies__movie-info {
+.movies-card__info {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -27,7 +27,7 @@
   margin: 14px 0;
 }
 
-.movies__movie-name {
+.movies-card__name {
   font-family: "Inter", "Arial", sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -37,7 +37,7 @@
   margin: 0;
 }
 
-.movies__movie-length {
+.movies-card__length {
   font-family: "Inter", "Arial", sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -47,7 +47,7 @@
   margin: 9px 0 0;
 }
 
-.movies__save-icon {
+.movies-card__save-icon {
   min-width: 30px;
   min-height: 30px;
   border-radius: 50%;
@@ -57,16 +57,16 @@
   background-repeat: no-repeat;
 }
 
-.movies__save-icon_active {
+.movies-card__save-icon_active {
   background-color: #2be080;
   background-image: url("../../images/movie-save-icon-active.svg");
 }
 
-.movies__save-icon:hover {
+.movies-card__save-icon:hover {
   cursor: pointer;
   opacity: 0.8;
 }
 
-.movies__movie-img {
+.movies-card__movie-image {
   width: 100%;
 }

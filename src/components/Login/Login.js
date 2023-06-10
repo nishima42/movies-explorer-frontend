@@ -5,9 +5,9 @@ import logo from "../../images/ME-logo.svg";
 function Login(props) {
   return (
     <>
-      <header className="login-header">
-        <img className="header__logo" alt="Логотип сайта" src={logo} />
-        <h1 className="login-header__title">Рады видеть!</h1>
+      <header className="login__header">
+        <img className="login__logo" alt="Логотип сайта" src={logo} />
+        <h1 className="login__title">Рады видеть!</h1>
       </header>
       <section className="login">
         <form className="login__form">
@@ -33,7 +33,7 @@ function Login(props) {
           </label>
           <input className="login__submit" type="submit" value="Войти" />
         </form>
-        <div className="login__enter-container">
+        <div className="login__container">
           <p className="login__text">Еще не зарегистрированы?</p>
           <a className="login__link" href="#">
             Регистрация

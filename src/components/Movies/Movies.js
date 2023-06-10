@@ -11,8 +11,8 @@ function Movies(props) {
       <Header />
       <SearchForm />
       <MoviesCardList />
-      <section className="more-movies">
-        <button className="more-movies__button" type="button">
+      <section className="movies__more">
+        <button className="movies__more-button" type="button">
           Ещё
         </button>
       </section>

@@ -4,22 +4,22 @@ import FilterCheckbox from "../FilterCheckbox/FilterCheckbox.js";
 
 function SearchForm(props) {
   return (
-    <section className="search">
-      <div className="search__search-bar">
-        <div className="search__search-icon"></div>
-        <form className="search__form">
+    <section className="search-form">
+      <div className="search-form__bar">
+        <div className="search-form__icon"></div>
+        <form className="search-form__form">
           <input
             type="search"
-            className="search__input"
+            className="search-form__input"
             name="movie-search"
             id="search"
             placeholder="Фильм"
           />
-          <input type="submit" className="search__submit" value="" />
+          <input type="submit" className="search-form__submit" value="" />
         </form>
         <FilterCheckbox />
       </div>
-      <div className="search__border"></div>
+      <div className="search-form__border"></div>
     </section>
   );
 }

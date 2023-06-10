@@ -4,8 +4,8 @@ import MovieCard from "../MoviesCard/MoviesCard.js";
 
 function MoviesCardList(props) {
   return (
-    <section className="movies">
-      <div className="movies__container">
+    <section className="movies-cardlist">
+      <div className="movies-cardlist__container">
         <MovieCard />
       </div>
     </section>
