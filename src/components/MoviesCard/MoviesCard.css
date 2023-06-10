@@ -1,0 +1,72 @@
+.movies__movie-card {
+  max-width: 364px;
+  max-height: 271px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.08);
+  background-color: #fdfdfd;
+}
+
+.movies__movie-card:hover {
+  cursor: pointer;
+}
+
+.movies__movie-container {
+  display: flex;
+  width: calc(100% - 28px);
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.movies__movie-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 14px 0;
+}
+
+.movies__movie-name {
+  font-family: "Inter", "Arial", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 18px;
+  color: #000000;
+  margin: 0;
+}
+
+.movies__movie-length {
+  font-family: "Inter", "Arial", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  color: #a0a0a0;
+  margin: 9px 0 0;
+}
+
+.movies__save-icon {
+  min-width: 30px;
+  min-height: 30px;
+  border-radius: 50%;
+  background-color: #f9f9f9;
+  background-image: url("../../images/movie-save-icon.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.movies__save-icon_active {
+  background-color: #2be080;
+  background-image: url("../../images/movie-save-icon-active.svg");
+}
+
+.movies__save-icon:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.movies__movie-img {
+  width: 100%;
+}

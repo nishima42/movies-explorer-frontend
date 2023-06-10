@@ -1,0 +1,15 @@
+.header {
+  height: 74px;
+  max-width: 1280px;
+  background-color: #ffffff;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__logo {
+  height: 38px;
+  width: 38px;
+  margin-left: 70px;
+}
