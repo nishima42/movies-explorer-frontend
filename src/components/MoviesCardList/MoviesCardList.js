@@ -7,6 +7,13 @@ function MoviesCardList(props) {
     <section className="movies-cardlist">
       <div className="movies-cardlist__container">
         <MovieCard />
+        <MovieCard />
+        <MovieCard />
+        <MovieCard />
+        <MovieCard />
+        <MovieCard />
+        <MovieCard />
+        <MovieCard />
       </div>
     </section>
   );

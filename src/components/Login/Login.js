@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./Login.css";
 import logo from "../../images/ME-logo.svg";
 
@@ -6,7 +7,9 @@ function Login(props) {
   return (
     <>
       <header className="login__header">
-        <img className="login__logo" alt="Логотип сайта" src={logo} />
+        <Link to="/" className="login__logo-link">
+          <img className="login__logo" alt="Логотип сайта" src={logo} />
+        </Link>
         <h1 className="login__title">Рады видеть!</h1>
       </header>
       <section className="login">
@@ -35,9 +38,9 @@ function Login(props) {
         </form>
         <div className="login__container">
           <p className="login__text">Еще не зарегистрированы?</p>
-          <a className="login__link" href="#">
+          <Link className="login__link" to="/signup">
             Регистрация
-          </a>
+          </Link>
         </div>
       </section>
     </>

@@ -20,6 +20,12 @@
   line-height: 15px;
 }
 
+@media screen and (max-width: 561px) {
+  .movies__more-button {
+    width: 240px;
+  }
+}
+
 .movies__more-button:hover {
   cursor: pointer;
   opacity: 0.8;

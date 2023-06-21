@@ -8,6 +8,23 @@
   height: 40px;
 }
 
+@media screen and (max-width: 1000px) {
+  .filter-checkbox {
+    padding: 0 20px;
+  }
+}
+
+@media screen and (max-width: 561px) {
+  .filter-checkbox {
+    padding: 0;
+    width: 100%;
+    max-width: 148px;
+    margin: 45px auto 0;
+    height: unset;
+    border: none;
+  }
+}
+
 .filter-checkbox__container {
   position: relative;
   display: inline-block;
@@ -59,4 +76,11 @@ input:checked + .filter-checkbox__slider:before {
   font-size: 13px;
   line-height: 1.38;
   margin: 0 0 0 14px;
+}
+
+@media screen and (max-width: 561px) {
+  .filter-checkbox__label {
+    font-size: 11px;
+    margin-left: 13px;
+  }
 }

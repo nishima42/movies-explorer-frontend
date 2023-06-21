@@ -1,8 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./SearchForm.css";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox.js";
 
 function SearchForm(props) {
+
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Удаляем обработчик события при размонтировании компонента
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <section className="search-form">
       <div className="search-form__bar">
@@ -17,8 +33,9 @@ function SearchForm(props) {
           />
           <input type="submit" className="search-form__submit" value="" />
         </form>
-        <FilterCheckbox />
+        {windowWidth > 561 && <FilterCheckbox />}
       </div>
+      {windowWidth <= 561 && <FilterCheckbox />}
       <div className="search-form__border"></div>
     </section>
   );
