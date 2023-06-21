@@ -13,8 +13,8 @@
 * CSS
 
 ## Ссылки на проект
-API загружен на сервер:
-IP 
+Проект загружен на сервер:
+IP 84.201.179.210
 Frontend https://movie-explorer.nomoredomains.rocks
 
 ## Ссылка на репозиторий

@@ -22,6 +22,7 @@ function AboutMe(props) {
             className="about-me__link"
             href="https://github.com/nishima42"
             target="_blank"
+            rel="noreferrer noopener"
           >
             Github
           </a>

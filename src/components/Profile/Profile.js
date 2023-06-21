@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Header from "../Header/Header.js";
 import "./Profile.css";
 
@@ -18,12 +19,12 @@ function Profile(props) {
             <dd className="profile__value">mrj@che-kuhni.ru</dd>
           </div>
         </dl>
-        <a className="profile__edit-link" href="#">
+        <Link to="/" className="profile__edit-link">
           Редактировать
-        </a>
-        <a className="profile__logout-link" href="#">
+        </Link>
+        <Link to="/" className="profile__logout-link">
           Выйти из аккаунта
-        </a>
+        </Link>
       </section>
     </>
   );
