@@ -1,0 +1,230 @@
+.navigation {
+  width: calc(100% - 222px);
+  margin-right: 70px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media screen and (max-width: 1000px) {
+  .navigation {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .navigation_open {
+    display: flex;
+    position: fixed;
+    width: 100%;
+    max-width: 520px;
+    height: 100vh;
+    top: 0;
+    right: 0;
+    background-color: #ffffff;
+    margin: 0;
+    flex-direction: column;
+    z-index: 2;
+  }
+}
+
+.navigation_movies {
+  justify-content: space-between;
+  font-size: 13px;
+  line-height: 1.38;
+}
+
+.navigation_register {
+  justify-content: flex-end;
+  font-size: 12px;
+  line-height: 1.33;
+}
+
+@media screen and (max-width: 1000px) {
+  .navigation_register {
+    justify-content: space-between;
+  }
+}
+
+.navigation__list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0;
+}
+
+@media screen and (max-width: 1000px) {
+  .navigation__list {
+    margin-top: 159px;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 561px) {
+  .navigation__list {
+    margin-top: 144px;
+  }
+}
+
+.navigation__list-item {
+  font-family: "Inter", "Arial", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  list-style-type: none;
+  text-decoration: none;
+  margin: auto;
+  margin-right: 16px;
+}
+
+@media screen and (max-width: 1000px) {
+  .navigation__list-item {
+    width: max-content;
+    margin: 0 0 28px 0;
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 500;
+  }
+}
+
+@media screen and (max-width: 561px) {
+  .navigation__list-item {
+    margin-bottom: 24px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .navigation__list-item_active {
+    border-bottom: solid #000000 2px;
+    padding-bottom: 4px;
+    margin-bottom: 22px;
+  }
+}
+
+@media screen and (max-width: 561px) {
+  .navigation__list-item_active {
+    margin-bottom: 15px;
+  }
+}
+
+.navigation__list-item_hidden {
+  display: none;
+}
+
+.navigation__link {
+  text-decoration: none;
+  color: #000000;
+}
+
+.navigation__link:hover {
+  opacity: 0.7;
+}
+
+.navigation__link_active {
+  font-weight: 500;
+}
+
+.navigation__button-link {
+  text-decoration: none;
+}
+
+.navigation__button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: #000000;
+  margin-left: 14px;
+  border: none;
+  font-family: "Inter", "Arial", sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  text-align: center;
+}
+
+@media screen and (max-width: 1000px) {
+  .navigation__button {
+    margin: 30px 0;
+  }
+}
+
+@media screen and (max-width: 561px) {
+  .navigation__button {
+    margin-bottom: 46px;
+  }
+}
+
+.navigation__button:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.navigation__button:active {
+  background-color: #e8e8e8;
+}
+
+.navigation__button_account {
+  border-radius: 20px;
+  width: 100px;
+  height: 32px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  line-height: 1.14;
+}
+
+.navigation__button_enter {
+  border-radius: 3px;
+  width: 76px;
+  height: 32px;
+  background-color: #2be080;
+  font-size: 12px;
+  line-height: 1.33;
+}
+
+.navigation__burger {
+  height: 44px;
+  width: 44px;
+  background-image: url("../../images/buger-menu.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  display: none;
+  margin-right: 30px;
+}
+
+@media screen and (max-width: 1000px) {
+  .navigation__burger {
+    display: block;
+  }
+}
+
+.navigation__burger_open {
+  position: fixed;
+  z-index: 3;
+  top: 18px;
+  right: 0;
+  background-image: url("../../images/buger-menu-close-icon.svg");
+}
+
+.navigation__background {
+  display: none;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000000;
+  opacity: 0.3;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+}
+
+.navigation__background_open {
+  display: block;
+}
+
+@media screen and (max-width: 520px) {
+  .navigation__background_open {
+    display: none;
+  }
+}

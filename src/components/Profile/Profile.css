@@ -1,0 +1,132 @@
+.profile {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile__greeting {
+  font-family: "Inter", "Arial", sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+  margin: 74px 0 0;
+}
+
+@media screen and (max-width: 1000px) {
+  .profile__greeting {
+    margin-top: 236px;
+  }
+}
+
+@media screen and (max-width: 561px) {
+  .profile__greeting {
+    margin-top: 70px;
+  }
+}
+
+.profile__container {
+  display: flex;
+  flex-direction: column;
+  max-width: 410px;
+  width: 100%;
+  margin: 123px 0 0;
+}
+
+@media screen and (max-width: 1000px) {
+  .profile__container {
+    width: calc(100% - 178px * 2);
+    margin-top: 96px;
+  }
+}
+
+@media screen and (max-width: 561px) {
+  .profile__container {
+    width: calc(100% - 30px * 2);
+    margin-top: 80px;
+  }
+}
+
+.profile__item {
+  display: flex;
+  justify-content: space-between;
+  font-family: "Inter", "Arial", sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 13px;
+  padding-bottom: 17px;
+}
+
+.profile__item:last-of-type {
+  border-top: solid #e8e8e8 1px;
+  padding: 16px 0 0;
+}
+
+.profile__key {
+  margin: 0;
+}
+
+.profile__value {
+  margin: 0;
+}
+
+.profile__edit-link {
+  font-family: "Inter", "Arial", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  margin: 220px 0 0;
+  color: #000000;
+  text-decoration: none;
+}
+
+.profile__edit-link:hover {
+  opacity: 0.7;
+}
+
+@media screen and (max-width: 1000px) {
+  .profile__edit-link {
+    margin-top: 210px;
+  }
+}
+
+@media screen and (max-width: 561px) {
+  .profile__edit-link {
+    font-size: 12px;
+    line-height: 15px;
+    margin-top: 397px;
+  }
+}
+
+.profile__logout-link {
+  font-family: "Inter", "Arial", sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 16px;
+  margin: 16px 0 70px;
+  color: #ee3465;
+  text-decoration: none;
+}
+
+.profile__logout-link:hover {
+  opacity: 0.7;
+}
+
+@media screen and (max-width: 1000px) {
+  .profile__logout-link {
+    margin-bottom: 269px;
+  }
+}
+
+@media screen and (max-width: 561px) {
+  .profile__logout-link {
+    font-size: 12px;
+    line-height: 15px;
+    margin-bottom: 40px;
+  }
+}
