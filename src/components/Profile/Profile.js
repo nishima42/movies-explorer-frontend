@@ -1,30 +1,137 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
 import Header from "../Header/Header.js";
 import "./Profile.css";
+import CurrentUserContext from "../../contexts/CurrentUserContext.js";
 
 function Profile(props) {
+  const currentUser = useContext(CurrentUserContext);
+
+  const [formValue, setFormValue] = useState({
+    name: "",
+    email: "",
+  });
+
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+  });
+
+  const { name, email } = formValue;
+  const { name: nameError, email: emailError } = errors;
+
+  const isFormValid = name && email && !nameError && !emailError;
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+
+    setFormValue({
+      ...formValue,
+      [name]: value,
+    });
+
+    validateField(name, value);
+  }
+
+  function validateField(fieldName, value) {
+    let errorMessage = "";
+
+    switch (fieldName) {
+      case "name":
+        if (!/^[a-zA-Zа-яА-ЯёЁ\s-]+$/.test(value)) {
+          errorMessage = "Некорректное имя.";
+        }
+        break;
+      case "email":
+        if (!/^\S+@\S+\.\S+$/.test(value)) {
+          errorMessage = "Некорректный email.";
+        }
+        break;
+      default:
+        break;
+    }
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [fieldName]: errorMessage,
+    }));
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const { name, email } = formValue;
+    if (validateForm()) {
+      props.onEditProfile(name, email);
+    }
+  }
+
+  function validateForm() {
+    const { name, email } = formValue;
+
+    const nameValid = /^[a-zA-Zа-яА-ЯёЁ\s-]+$/.test(name);
+    const emailValid = /^\S+@\S+\.\S+$/.test(email);
+
+    setErrors({
+      name: nameValid ? "" : "Некорректное имя.",
+      email: emailValid ? "" : "Некорректный email.",
+    });
+
+    return nameValid && emailValid;
+  }
+
+  useEffect(() => {
+    if (currentUser) {
+      setFormValue({
+        name: currentUser.name || "",
+        email: currentUser.email || "",
+      });
+    }
+  }, [currentUser]);
+
   return (
     <>
       <Header />
       <section className="profile">
         <h1 className="profile__greeting">Привет, Рустам!</h1>
-        <dl className="profile__container">
-          <div className="profile__item">
-            <dt className="profile__key">Имя</dt>
-            <dd className="profile__value">Рустам</dd>
-          </div>
-          <div className="profile__item">
-            <dt className="profile__key">E-mail</dt>
-            <dd className="profile__value">mrj@che-kuhni.ru</dd>
-          </div>
-        </dl>
-        <Link to="/" className="profile__edit-link">
-          Редактировать
-        </Link>
-        <Link to="/" className="profile__logout-link">
+        <form className="profile__form" onSubmit={handleSubmit}>
+          <label className="profile__label">
+            Имя
+            <input
+              className="profile__input"
+              type="text"
+              name="name"
+              id="name"
+              required
+              value={name}
+              onChange={handleChange}
+            />
+          </label>
+          {nameError && <span className="profile__error">{nameError}</span>}
+          <label className="profile__label">
+            E-mail
+            <input
+              className="profile__input"
+              type="email"
+              name="email"
+              id="email"
+              required
+              value={email}
+              onChange={handleChange}
+            />
+          </label>
+          {emailError && <span className="profile__error">{emailError}</span>}
+          <input
+            className={`profile__submit ${
+              isFormValid ? "" : "profile__submit_disabled"
+            }`}
+            type="submit"
+            value="Редактировать"
+            disabled={!isFormValid}
+          />
+        </form>
+        <p className="profile__logout-link" onClick={props.onLogout}>
           Выйти из аккаунта
-        </Link>
+        </p>
       </section>
     </>
   );

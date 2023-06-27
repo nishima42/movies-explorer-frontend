@@ -1,9 +1,82 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Login.css";
 import logo from "../../images/ME-logo.svg";
 
 function Login(props) {
+  const [formValue, setFormValue] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+  });
+
+  const { email, password } = formValue;
+  const { email: emailError, password: passwordError } = errors;
+
+  const isFormValid = email && password && !emailError && !passwordError;
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+
+    setFormValue({
+      ...formValue,
+      [name]: value,
+    });
+
+    validateField(name, value);
+  }
+
+  function validateField(fieldName, value) {
+    let errorMessage = "";
+
+    switch (fieldName) {
+      case "email":
+        if (!/^\S+@\S+\.\S+$/.test(value)) {
+          errorMessage = "Некорректный email.";
+        }
+        break;
+      case "password":
+        if (value.length < 6) {
+          errorMessage = "Пароль должен содержать не менее 6 символов.";
+        }
+        break;
+      default:
+        break;
+    }
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [fieldName]: errorMessage,
+    }));
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const { email, password } = formValue;
+    if (validateForm()) {
+      props.onLogin(email, password);
+    }
+  }
+
+  function validateForm() {
+    const { email, password } = formValue;
+    const emailValid = /^\S+@\S+\.\S+$/.test(email);
+    const passwordValid = password.length >= 6;
+
+    setErrors({
+      email: emailValid ? "" : "Некорректный email.",
+      password: passwordValid
+        ? ""
+        : "Пароль должен содержать не менее 6 символов.",
+    });
+
+    return emailValid && passwordValid;
+  }
+
   return (
     <>
       <header className="login__header">
@@ -13,7 +86,7 @@ function Login(props) {
         <h1 className="login__title">Рады видеть!</h1>
       </header>
       <section className="login">
-        <form className="login__form">
+        <form className="login__form" onSubmit={handleSubmit}>
           <label className="login__label">
             E-mail
             <input
@@ -22,7 +95,10 @@ function Login(props) {
               name="email"
               id="email"
               required
+              value={email}
+              onChange={handleChange}
             />
+            {emailError && <span className="login__error">{emailError}</span>}
           </label>
           <label className="login__label">
             Пароль
@@ -32,9 +108,21 @@ function Login(props) {
               name="password"
               id="password"
               required
+              value={password}
+              onChange={handleChange}
             />
+            {passwordError && (
+              <span className="login__error">{passwordError}</span>
+            )}
           </label>
-          <input className="login__submit" type="submit" value="Войти" />
+          <input
+            className={`login__submit ${
+              isFormValid ? "" : "login__submit_disabled"
+            }`}
+            type="submit"
+            value="Войти"
+            disabled={!isFormValid}
+          />
         </form>
         <div className="login__container">
           <p className="login__text">Еще не зарегистрированы?</p>

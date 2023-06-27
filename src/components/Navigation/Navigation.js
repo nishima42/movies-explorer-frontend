@@ -1,24 +1,21 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import "./Navigation.css";
+import LoggedInContext from "../../contexts/LoggedInContext.js";
 
 function Navigation(props) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const loggedIn = useContext(LoggedInContext);
 
   function handleToggleMenu() {
     setIsOpen(!isOpen);
-  }
-
-  function handleLogIn() {
-    setIsLoggedIn(!isOpen);
   }
 
   return (
     <>
       <nav
         className={`navigation ${
-          isLoggedIn ? "navigation_movies" : "navigation_register"
+          loggedIn ? "navigation_movies" : "navigation_register"
         } ${isOpen ? "navigation_open" : ""}`}
       >
         <ul
@@ -44,19 +41,19 @@ function Navigation(props) {
           </li>
           <li className="navigation__list-item">
             <NavLink
-              to={`${isLoggedIn ? "/movies" : "/signup"}`}
+              to={`${loggedIn ? "/movies" : "/signup"}`}
               className={({ isActive }) =>
                 `navigation__link ${
                   isActive ? "navigation__list-item_active" : ""
                 }`
               }
             >
-              {`${isLoggedIn ? "Фильмы" : "Регистрация"}`}
+              {`${loggedIn ? "Фильмы" : "Регистрация"}`}
             </NavLink>
           </li>
           <li
             className={`navigation__list-item ${
-              isLoggedIn ? "" : "navigation__list-item_hidden"
+              loggedIn ? "" : "navigation__list-item_hidden"
             }`}
           >
             <NavLink
@@ -72,18 +69,18 @@ function Navigation(props) {
           </li>
         </ul>
         <Link
-          to={`${isLoggedIn ? "/profile" : "/signin"}`}
+          to={`${loggedIn ? "/profile" : "/signin"}`}
           className="navigation__button-link"
         >
           <button
             className={`navigation__button ${
-              isLoggedIn
+              loggedIn
                 ? "navigation__button_account"
                 : "navigation__button_enter"
             }`}
             type="button"
           >
-            {`${isLoggedIn ? "Аккаунт" : "Войти"}`}
+            {`${loggedIn ? "Аккаунт" : "Войти"}`}
           </button>
         </Link>
       </nav>
