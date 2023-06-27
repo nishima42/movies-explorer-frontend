@@ -17,6 +17,9 @@
 IP 84.201.179.210
 Frontend https://movie-explorer.nomoredomains.rocks
 
+## Ссылка на pull request
+https://github.com/nishima42/movies-explorer-frontend/pull/2
+
 ## Ссылка на репозиторий
 https://github.com/nishima42/movies-explorer-frontend
 
