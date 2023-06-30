@@ -3,6 +3,10 @@ import { useState, useContext, useEffect } from "react";
 import Header from "../Header/Header.js";
 import "./Profile.css";
 import CurrentUserContext from "../../contexts/CurrentUserContext.js";
+import {
+  ERROR_MESSAGE,
+  CONFIRMATION_MESSAGE,
+} from "../../utils/constants.js";
 
 function Profile(props) {
   const currentUser = useContext(CurrentUserContext);
@@ -146,11 +150,11 @@ function Profile(props) {
           {emailError && <span className="profile__error">{emailError}</span>}
           {isConfirmed && (
             <p className="profile__confirmation">
-              Данные пользователя сохранены
+              {CONFIRMATION_MESSAGE}
             </p>
           )}
           {editProfileError && (
-              <span className="profile__server-error">Что-то пошло не так</span>
+              <span className="profile__server-error">{ERROR_MESSAGE}</span>
             )}
           <input
             className={`profile__submit ${

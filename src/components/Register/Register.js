@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../Login/Login.css";
 import logo from "../../images/ME-logo.svg";
+import { ERROR_MESSAGE } from "../../utils/constants.js";
 
 function Register(props) {
   const [formValue, setFormValue] = useState({
@@ -169,7 +170,7 @@ function Register(props) {
             )}
           </label>
           {registerError && (
-              <span className="register__server-error login__server-error">Что-то пошло не так</span>
+              <span className="register__server-error login__server-error">{ERROR_MESSAGE}</span>
             )}
           <input
             className={`register__submit login__submit ${

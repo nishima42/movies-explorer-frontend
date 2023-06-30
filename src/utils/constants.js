@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://movie-explorer.nomoredomains.rocks/api';
+export const BASE_URL = "https://movie-explorer.nomoredomains.rocks/api";
 export const SHORTS_DURATION = 40;
 export const TABLET_RES = 1000;
 export const MOBILE_RES = 561;
@@ -8,3 +8,5 @@ export const TABLET_INITIAL = 8;
 export const TABLET_ADDITIONAL = 2;
 export const MOBILE_INITIAL = 5;
 export const MOBILE_ADDITIONAL = 2;
+export const ERROR_MESSAGE = "Что-то пошло не так";
+export const CONFIRMATION_MESSAGE = "Данные пользователя сохранены";
