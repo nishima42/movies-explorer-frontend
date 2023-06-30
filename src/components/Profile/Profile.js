@@ -17,10 +17,16 @@ function Profile(props) {
     email: "",
   });
 
+  const [editProfileError, setEditProfileError] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
+
   const { name, email } = formValue;
   const { name: nameError, email: emailError } = errors;
 
   const isFormValid = name && email && !nameError && !emailError;
+
+  const isDataChanged =
+    name !== currentUser.name || email !== currentUser.email;
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -88,11 +94,27 @@ function Profile(props) {
     }
   }, [currentUser]);
 
+  useEffect(() => {
+    setEditProfileError(props.serverError);
+  }, [props.serverError])
+
+  useEffect(() => {
+    setEditProfileError(false);
+  }, [])
+
+  useEffect(() => {
+    setIsConfirmed(props.showConfirmation);
+  }, [props.showConfirmation])
+
+  useEffect(() => {
+    setIsConfirmed(false);
+  }, [])
+
   return (
     <>
       <Header />
       <section className="profile">
-        <h1 className="profile__greeting">Привет, Рустам!</h1>
+        <h1 className="profile__greeting">Привет, {currentUser.name}!</h1>
         <form className="profile__form" onSubmit={handleSubmit}>
           <label className="profile__label">
             Имя
@@ -104,6 +126,7 @@ function Profile(props) {
               required
               value={name}
               onChange={handleChange}
+              disabled={props.isSubmitting}
             />
           </label>
           {nameError && <span className="profile__error">{nameError}</span>}
@@ -117,16 +140,25 @@ function Profile(props) {
               required
               value={email}
               onChange={handleChange}
+              disabled={props.isSubmitting}
             />
           </label>
           {emailError && <span className="profile__error">{emailError}</span>}
+          {isConfirmed && (
+            <p className="profile__confirmation">
+              Данные пользователя сохранены
+            </p>
+          )}
+          {editProfileError && (
+              <span className="profile__server-error">Что-то пошло не так</span>
+            )}
           <input
             className={`profile__submit ${
-              isFormValid ? "" : "profile__submit_disabled"
+              isFormValid && isDataChanged ? "" : "profile__submit_disabled"
             }`}
             type="submit"
             value="Редактировать"
-            disabled={!isFormValid}
+            disabled={!isFormValid || !isDataChanged || props.isSubmitting}
           />
         </form>
         <p className="profile__logout-link" onClick={props.onLogout}>

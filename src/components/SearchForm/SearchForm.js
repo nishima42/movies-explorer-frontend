@@ -8,24 +8,58 @@ function SearchForm(props) {
   const savedMoviesLocation = location.pathname === "/saved-movies";
 
   const [searchValue, setSearchValue] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [checkboxChecked, setCheckboxChecked] = useState(false);
+
+  function handleCheckboxChange(state) {
+    setCheckboxChecked(state);
+    !savedMoviesLocation && props.saveShortsState(state);
+    !savedMoviesLocation && localStorage.setItem("shortsState", JSON.stringify(state));
+    savedMoviesLocation && props.onShortsChange(state);
+  }
 
   function handleSearchChange(e) {
     setSearchValue(e.target.value);
   }
 
+  function validateSearchValue() {
+    if (searchValue.trim() === "") {
+      setIsError(true);
+      return false;
+    }
+    setIsError(false);
+    return true;
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
-    props.saveSearchKeyword(searchValue);
+
+    const isValid = validateSearchValue();
+    if (!isValid) {
+      return;
+    }
+
     if (savedMoviesLocation) {
+      props.setIsSearchSubmitted(true);
       props.onSearchSubmitSaved(searchValue);
+
     } else {
+      localStorage.setItem("searchKeyword", searchValue);
+      localStorage.setItem("shortsState", checkboxChecked);
       props.onSearchSubmit(searchValue);
     }
   }
 
   useEffect(() => {
-    if (props.searchKeyword) {
-      setSearchValue(props.searchKeyword);
+    const searchKeyword = localStorage.getItem("searchKeyword");
+    const savedShortsState = localStorage.getItem("shortsState");
+    if (!savedMoviesLocation) {
+      if (searchKeyword) {
+        setSearchValue(searchKeyword);
+      }
+      if (savedShortsState) {
+        setCheckboxChecked(savedShortsState === "true");
+      }
     }
   }, []);
 
@@ -42,23 +76,23 @@ function SearchForm(props) {
             placeholder="Фильм"
             value={searchValue}
             onChange={handleSearchChange}
-            required
           />
           <input type="submit" className="search-form__submit" value="" />
         </form>
         {props.windowWidth > 561 && (
           <FilterCheckbox
-            onShortsChange={props.onShortsChange}
-            shortsState={props.shortsState}
+            checked={checkboxChecked}
+            onChange={handleCheckboxChange}
           />
         )}
       </div>
       {props.windowWidth <= 561 && (
         <FilterCheckbox
-          onShortsChange={props.onShortsChange}
-          shortsState={props.shortsState}
+          checked={checkboxChecked}
+          onChange={handleCheckboxChange}
         />
       )}
+      {isError && <p className="search__error">Нужно ввести ключевое слово</p>}
       <div className="search-form__border"></div>
     </section>
   );

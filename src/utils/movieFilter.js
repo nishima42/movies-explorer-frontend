@@ -1,13 +1,15 @@
+import { SHORTS_DURATION } from "./constants.js";
+
 export function filterMovies(movies, searchKeyword, shortsChecked) {
   return movies.filter((movie) => {
-    const matchKeyword =
-      movie.nameRU.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-      movie.nameEN.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-      movie.country.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-      movie.description.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-      movie.director.toLowerCase().includes(searchKeyword.toLowerCase());
+    const keyword = searchKeyword.toLowerCase();
+    const fieldsToSearch = [
+      movie.nameRU.toLowerCase(),
+      movie.nameEN.toLowerCase()
+    ];
 
-    const matchShorts = shortsChecked ? movie.duration <= 40 : true;
+    const matchKeyword = fieldsToSearch.some((field) => field.includes(keyword));
+    const matchShorts = shortsChecked ? movie.duration <= SHORTS_DURATION : true;
 
     return matchKeyword && matchShorts;
   });

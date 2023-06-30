@@ -24,17 +24,14 @@ function App() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  //Стейты поиска /movies
-  const [searchKeyword, setSearchKeyword] = useState("");
   const [shortsState, setShortsState] = useState(false);
 
   //Стейты поиска /saved-movies
   const [searchKeywordSaved, setSearchKeywordSaved] = useState("");
   const [shortsStateSaved, setShortsStateSaved] = useState(false);
 
-  //Стейт для всех фильмаов с сервера
-  const [allMovies, setAllMovies] = useState([]);
   //Стейт для отфильтрованных фильмов /movies
   const [filteredMovies, setFilteredMovies] = useState([]);
 
@@ -48,28 +45,41 @@ function App() {
 
   const navigate = useNavigate();
 
-  //Функции для сохранения стейтов поиска /movies
+  const [serverError, setServerError] = useState(false);
+
+  const [notFoundSaved, setNotFoundSaved] = useState(false);
+
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   function handleRegister(name, email, password) {
+    setServerError(false);
+    setIsSubmitting(true);
     auth
       .register(name, email, password)
       .then((res) => {
+        setIsSubmitting(false);
         console.log("Вы успешно зарегистрировались");
         handleLogin(email, password);
       })
       .catch((err) => {
+        setIsSubmitting(false);
+        setServerError(true);
         console.log(err);
       });
   }
 
   function handleLogin(email, password) {
+    setServerError(false);
+    setIsSubmitting(true);
     auth
       .authorize(email, password)
       .then((data) => {
+        setIsSubmitting(false);
         if (data.token) {
           setLoggedIn(true);
           navigate("/movies", { replace: true });
           console.log("Вы успешно вошли в систему");
+          getsavedMovies();
           mainApi
             .getUserInfo()
             .then((userInfo) => {
@@ -79,16 +89,22 @@ function App() {
             })
             .catch((err) => {
               console.log(err);
+              setServerError(true);
             });
         }
       })
       .catch((err) => {
+        setIsSubmitting(false);
+        setServerError(true);
         console.log(err);
       });
   }
 
   function handleLogOut() {
-    localStorage.removeItem("token");
+    setFilteredMovies([]);
+    setShortsState(false);
+    localStorage.clear();
+    document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
     setLoggedIn(false);
     setCurrentUser({});
     navigate("/", { replace: true });
@@ -103,7 +119,6 @@ function App() {
           if (userInfo) {
             setCurrentUser(userInfo);
             setLoggedIn(true);
-            navigate("/", { replace: true });
           }
         })
         .catch((err) => {
@@ -112,31 +127,37 @@ function App() {
     }
   }
 
-  function handleEditProfile(name, email) {
+  function getsavedMovies() {
     mainApi
-      .patchUserInfo(name, email)
-      .then((userInfo) => {
-        setCurrentUser(userInfo);
+      .getMovies()
+      .then((res) => {
+        setSavedMovies(res.movies);
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  function saveAllMovies(movies) {
-    setAllMovies(movies);
-  }
-
-  function activatePreloader() {
-    setIsPreloaderActive(true);
-  }
-
-  function deactivatePreloader() {
-    setIsPreloaderActive(false);
+  function handleEditProfile(name, email) {
+    setShowConfirmation(false);
+    setServerError(false);
+    setIsSubmitting(true);
+    mainApi
+      .patchUserInfo(name, email)
+      .then((userInfo) => {
+        setIsSubmitting(false);
+        setCurrentUser(userInfo);
+        setShowConfirmation(true);
+      })
+      .catch((err) => {
+        setShowConfirmation(false);
+        setIsSubmitting(false);
+        setServerError(true);
+        console.log(err);
+      });
   }
 
   function handleCardLike(movie) {
-    console.log(movie);
     if (savedMovies.some((i) => i.nameRU === movie.nameRU)) {
       console.log("Фильм уже сохранен");
     } else {
@@ -166,12 +187,12 @@ function App() {
       });
   }
 
-  //Функции для сохранения стейтов поиска /movies
-  function saveSearchKeyword(keyword) {
-    setSearchKeyword(keyword);
+  function activatePreloader() {
+    setIsPreloaderActive(true);
   }
-  function saveshortsState(state) {
-    setShortsState(state);
+
+  function deactivatePreloader() {
+    setIsPreloaderActive(false);
   }
 
   //Функции для сохранения стейтов поиска /saved-movies
@@ -182,73 +203,78 @@ function App() {
     setShortsStateSaved(state);
   }
 
+  function saveShortsState(state) {
+    setShortsState(state);
+  }
+
   function handleSearchSubmit(searchValue) {
-    if (allMovies.length === 0) {
+    const allMovies = JSON.parse(localStorage.getItem("allMovies"));
+    setShortsState(JSON.parse(localStorage.getItem("shortsState")));
+    if (!allMovies) {
       activatePreloader();
       movieApi
         .getMovies()
         .then((movies) => {
-          saveAllMovies(movies);
+          localStorage.setItem("allMovies", JSON.stringify(movies));
           const filtered = filterMovies(movies, searchValue, shortsState);
+          localStorage.setItem("filteredMovies", JSON.stringify(filtered));
           deactivatePreloader();
           setFilteredMovies(filtered);
+          if (filtered.length === 0) {
+            setIsNotFound(true);
+          } else {
+            setIsNotFound(false);
+          }
         })
         .catch((err) => {
           console.log(err);
         });
     } else {
       const filtered = filterMovies(allMovies, searchValue, shortsState);
+      localStorage.setItem("filteredMovies", JSON.stringify(filtered));
       setFilteredMovies(filtered);
+      if (filtered.length === 0) {
+        setIsNotFound(true);
+      } else {
+        setIsNotFound(false);
+      }
     }
   }
 
   function handleSearchSubmitSaved(searchValue) {
+    setSearchKeywordSaved(searchValue);
     const filtered = filterMovies(savedMovies, searchValue, shortsStateSaved);
     setFilteredSavedMovies(filtered);
+    if (filtered.length === 0) {
+      setNotFoundSaved(true);
+    } else {
+      setNotFoundSaved(false);
+    }
   }
 
+  //Повторный поиск при переключении чекбокса
   useEffect(() => {
-    tokenCheck();
-  }, []);
-
-  useEffect(() => {
-    mainApi
-      .getMovies()
-      .then((res) => {
-        setSavedMovies(res.movies);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  useEffect(() => {
-    if (allMovies.length !== 0) {
+    const allMovies = JSON.parse(localStorage.getItem("allMovies"));
+    const searchKeyword = localStorage.getItem("searchKeyword");
+    if (allMovies) {
       handleSearchSubmit(searchKeyword);
     }
   }, [shortsState]);
 
+  //Повторный поиск при переключении чекбокса в сохраненных
   useEffect(() => {
-    if (filteredSavedMovies.length !== 0) {
+    if (savedMovies && searchKeywordSaved) {
       handleSearchSubmitSaved(searchKeywordSaved);
     }
   }, [shortsStateSaved]);
 
   useEffect(() => {
-    if (allMovies.length !== 0) {
-      const movies = filterMovies(allMovies, searchKeyword, shortsState);
-      if (movies.length !== 0) {
-        setFilteredMovies(movies);
-        setIsNotFound(false);
-      } else {
-        setFilteredMovies([]);
-        setIsNotFound(true);
-      }
-    } else {
-      setFilteredMovies([]);
-    }
-  }, [allMovies, searchKeyword, shortsState]);
+    tokenCheck();
+    getsavedMovies();
+    setSearchKeywordSaved("");
+  }, []);
 
+  // запись размера экрана
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -264,10 +290,25 @@ function App() {
       <LoggedInContext.Provider value={loggedIn}>
         <SavedMoviesContext.Provider value={savedMovies}>
           <Routes>
-            <Route path="/signin" element={<Login onLogin={handleLogin} />} />
+            <Route
+              path="/signin"
+              element={
+                <Login
+                  onLogin={handleLogin}
+                  isSubmitting={isSubmitting}
+                  serverError={serverError}
+                />
+              }
+            />
             <Route
               path="/signup"
-              element={<Register onRegister={handleRegister} />}
+              element={
+                <Register
+                  onRegister={handleRegister}
+                  isSubmitting={isSubmitting}
+                  serverError={serverError}
+                />
+              }
             />
             <Route path="/" element={<Main />} />
             <Route
@@ -283,10 +324,7 @@ function App() {
                   onCardLike={handleCardLike}
                   onCardDelete={handleCardDelete}
                   onSearchSubmit={handleSearchSubmit}
-                  onShortsChange={saveshortsState}
-                  saveSearchKeyword={saveSearchKeyword}
-                  searchKeyword={searchKeyword}
-                  shortsState={shortsState}
+                  saveShortsState={saveShortsState}
                 />
               }
             />
@@ -305,6 +343,7 @@ function App() {
                   shortsState={shortsStateSaved}
                   searchKeywordSaved={searchKeywordSaved}
                   saveSearchKeyword={saveSearchKeywordSaved}
+                  notFoundSaved={notFoundSaved}
                 />
               }
             />
@@ -316,6 +355,9 @@ function App() {
                   onLogout={handleLogOut}
                   onEditProfile={handleEditProfile}
                   loggedIn={loggedIn}
+                  isSubmitting={isSubmitting}
+                  serverError={serverError}
+                  showConfirmation={showConfirmation}
                 />
               }
             />

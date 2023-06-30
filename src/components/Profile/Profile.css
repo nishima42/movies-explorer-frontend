@@ -89,6 +89,23 @@
   text-align: end;
 }
 
+.profile__server-error {
+  font-family: "Inter", "Arial", sans-serif;
+  font-style: normal;
+  font-size: 14px;
+  color: #ee3465;
+  margin: 10px auto 0;
+}
+
+.profile__confirmation {
+  font-family: "Inter", "Arial", sans-serif;
+  font-style: normal;
+  font-size: 10px;
+  margin: 10px 0;
+  color: #2be080;
+  text-align: center;
+}
+
 .profile__submit {
   font-family: "Inter", "Arial", sans-serif;
   font-style: normal;

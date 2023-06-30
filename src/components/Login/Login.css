@@ -115,6 +115,14 @@
   color: #ee3465;
 }
 
+.login__server-error {
+  font-family: "Inter", "Arial", sans-serif;
+  font-style: normal;
+  font-size: 14px;
+  color: #ee3465;
+  margin: 10px auto 0;
+}
+
 .login__submit {
   width: 100%;
   max-width: 396px;

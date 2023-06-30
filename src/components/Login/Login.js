@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Login.css";
 import logo from "../../images/ME-logo.svg";
@@ -13,6 +13,8 @@ function Login(props) {
     email: "",
     password: "",
   });
+
+  const [loginError, setLoginError] = useState(false);
 
   const { email, password } = formValue;
   const { email: emailError, password: passwordError } = errors;
@@ -77,6 +79,14 @@ function Login(props) {
     return emailValid && passwordValid;
   }
 
+  useEffect(() => {
+    setLoginError(props.serverError);
+  }, [props.serverError])
+
+  useEffect(() => {
+    setLoginError(false);
+  }, [])
+
   return (
     <>
       <header className="login__header">
@@ -97,6 +107,7 @@ function Login(props) {
               required
               value={email}
               onChange={handleChange}
+              disabled={props.isSubmitting}
             />
             {emailError && <span className="login__error">{emailError}</span>}
           </label>
@@ -110,18 +121,22 @@ function Login(props) {
               required
               value={password}
               onChange={handleChange}
+              disabled={props.isSubmitting}
             />
             {passwordError && (
               <span className="login__error">{passwordError}</span>
             )}
           </label>
+          {loginError && (
+              <span className="login__server-error">Что-то пошло не так</span>
+            )}
           <input
             className={`login__submit ${
               isFormValid ? "" : "login__submit_disabled"
             }`}
             type="submit"
             value="Войти"
-            disabled={!isFormValid}
+            disabled={!isFormValid || props.isSubmitting}
           />
         </form>
         <div className="login__container">

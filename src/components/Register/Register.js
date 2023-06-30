@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../Login/Login.css";
 import logo from "../../images/ME-logo.svg";
@@ -15,6 +15,8 @@ function Register(props) {
     email: "",
     password: "",
   });
+
+  const [registerError, setRegisterError] = useState(false);
 
   const { name, email, password } = formValue;
   const {
@@ -94,6 +96,14 @@ function Register(props) {
     return nameValid && emailValid && passwordValid;
   }
 
+  useEffect(() => {
+    setRegisterError(props.serverError);
+  }, [props.serverError])
+
+  useEffect(() => {
+    setRegisterError(false);
+  }, [])
+
   return (
     <>
       <header className="register__header login__header">
@@ -118,6 +128,7 @@ function Register(props) {
               required
               value={name}
               onChange={handleChange}
+              disabled={props.isSubmitting}
             />
             {nameError && (
               <span className="register__error login__error">{nameError}</span>
@@ -133,6 +144,7 @@ function Register(props) {
               required
               value={email}
               onChange={handleChange}
+              disabled={props.isSubmitting}
             />
             {emailError && (
               <span className="register__error login__error">{emailError}</span>
@@ -148,6 +160,7 @@ function Register(props) {
               required
               value={password}
               onChange={handleChange}
+              disabled={props.isSubmitting}
             />
             {passwordError && (
               <span className="register__error login__error">
@@ -155,6 +168,9 @@ function Register(props) {
               </span>
             )}
           </label>
+          {registerError && (
+              <span className="register__server-error login__server-error">Что-то пошло не так</span>
+            )}
           <input
             className={`register__submit login__submit ${
               isFormValid
@@ -163,7 +179,7 @@ function Register(props) {
             }`}
             type="submit"
             value="Зарегистрироваться"
-            disabled={!isFormValid}
+            disabled={!isFormValid || props.isSubmitting}
           />
         </form>
         <div className="register__enter-container login__container">

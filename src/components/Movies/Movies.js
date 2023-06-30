@@ -7,6 +7,16 @@ import SearchForm from "../SearchForm/SearchForm.js";
 import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
 import Preloader from "../Preloader/Preloader.js";
 import More from "../More/More.js";
+import {
+  TABLET_RES,
+  MOBILE_RES,
+  DESKTOP_INITIAL,
+  DESKTOP_ADDITIONAL,
+  TABLET_INITIAL,
+  TABLET_ADDITIONAL,
+  MOBILE_INITIAL,
+  MOBILE_ADDITIONAL,
+} from "../../utils/constants.js";
 
 function Movies(props) {
   const [initialMovies, setInitialMovies] = useState(0);
@@ -19,33 +29,35 @@ function Movies(props) {
   }
 
   useEffect(() => {
-    if (props.windowWidth > 1000) {
-      setInitialMovies(12);
-      setAdditionalMovies(3);
-    } else if (props.windowWidth > 561) {
-      setInitialMovies(8);
-      setAdditionalMovies(2);
+    if (props.windowWidth > TABLET_RES) {
+      setInitialMovies(DESKTOP_INITIAL);
+      setAdditionalMovies(DESKTOP_ADDITIONAL);
+    } else if (props.windowWidth > MOBILE_RES) {
+      setInitialMovies(TABLET_INITIAL);
+      setAdditionalMovies(TABLET_ADDITIONAL);
     } else {
-      setInitialMovies(5);
-      setAdditionalMovies(2);
+      setInitialMovies(MOBILE_INITIAL);
+      setAdditionalMovies(MOBILE_ADDITIONAL);
     }
-  }, []);
+  }, [props.windowWidth]);
 
   return (
     <>
       <Header />
       <SearchForm
         onSearchSubmit={props.onSearchSubmit}
-        onShortsChange={props.onShortsChange}
-        saveSearchKeyword={props.saveSearchKeyword}
-        searchKeyword={props.searchKeyword}
-        shortsState={props.shortsState}
         windowWidth={props.windowWidth}
+        saveShortsState={props.saveShortsState}
       />
-      {props.movies.length !== 0 && (
+      {(props.movies.length !== 0 ||
+        localStorage.getItem("filteredMovies")) && (
         <>
           <MoviesCardList
-            movies={props.movies.slice(0, initialMovies)}
+            movies={
+              props.movies.length !== 0
+                ? props.movies.slice(0, initialMovies)
+                : JSON.parse(localStorage.getItem("filteredMovies"))
+            }
             onCardLike={props.onCardLike}
             onCardDelete={props.onCardDelete}
           />

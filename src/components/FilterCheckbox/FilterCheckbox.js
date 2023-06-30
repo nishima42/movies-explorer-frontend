@@ -1,17 +1,14 @@
 import React from "react";
-import { useEffect } from "react";
 import "./FilterCheckbox.css";
 
 function FilterCheckbox(props) {
+
   function handleCheckboxChange(e) {
     const state = e.target.checked;
-    props.onShortsChange(state);
+    if (props.onChange) {
+      props.onChange(state);
+    }
   }
-
-  useEffect(() => {
-    const shorts = document.getElementById("shorts-checkbox");
-    shorts.checked = props.shortsState;
-  }, []);
 
   return (
     <div className="filter-checkbox">
@@ -21,6 +18,7 @@ function FilterCheckbox(props) {
           className="filter-checkbox__checkbox"
           id="shorts-checkbox"
           onChange={handleCheckboxChange}
+          checked={props.checked}
         />
         <span className="filter-checkbox__slider"></span>
       </label>
