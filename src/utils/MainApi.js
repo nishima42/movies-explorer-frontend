@@ -84,6 +84,16 @@ class MainApi {
       },
     }).then(this._checkResponse);
   }
+
+  signout() {
+    return fetch(`${this._baseUrl}/signout`, {
+      method: "POST",
+      headers: {
+        ...this._headers,
+        'Authorization': `Bearer ${this.getToken()}`
+      },
+    }).then(this._checkResponse);
+  }
 }
 
 const mainApi = new MainApi({

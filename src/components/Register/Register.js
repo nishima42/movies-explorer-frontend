@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../Login/Login.css";
 import logo from "../../images/ME-logo.svg";
 import { ERROR_MESSAGE } from "../../utils/constants.js";
 
 function Register(props) {
+
+  const navigate = useNavigate();
+
   const [formValue, setFormValue] = useState({
     name: "",
     email: "",
@@ -100,6 +103,10 @@ function Register(props) {
   useEffect(() => {
     setRegisterError(props.serverError);
   }, [props.serverError])
+
+  useEffect(() => {
+    props.loggedIn && navigate("/movies", { replace: true });
+  }, [props.loggedIn])
 
   useEffect(() => {
     setRegisterError(false);

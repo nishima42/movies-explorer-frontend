@@ -9,8 +9,8 @@ import "./SavedMovies.css";
 
 function SavedMovies(props) {
 
-  const [isSearchSubmitted, setIsSearchSubmitted] = useState(false);
   const [notFound, setNotFound] = useState(false);
+  const [filteredMovies, setFilteredMovies] = useState([]);
 
   function handleNotFound(state) {
     setNotFound(state);
@@ -18,18 +18,14 @@ function SavedMovies(props) {
 
   useEffect(() => {
     handleNotFound(props.notFoundSaved);
+    setFilteredMovies(props.filteredSavedMovies)
   }, [props.filteredSavedMovies]);
 
   useEffect(() => {
-    setIsSearchSubmitted(false);
+    props.resetSearchKeywordSaved();
     handleNotFound(false);
+    setFilteredMovies(props.savedMovies)
   }, []);
-
-  useEffect(() => {
-    setIsSearchSubmitted(false);
-    handleNotFound(false);
-  }, [props.savedMovies]);
-
 
   return (
     <>
@@ -41,19 +37,18 @@ function SavedMovies(props) {
         searchKeyword={props.searchKeywordSaved}
         shortsState={props.shortsState}
         windowWidth={props.windowWidth}
-        setIsSearchSubmitted={setIsSearchSubmitted}
       />
       {props.savedMovies !== 0 && !notFound && (
         <MoviesCardList
           movies={
-            isSearchSubmitted
-              ? !notFound && props.filteredSavedMovies
-              : props.savedMovies
+            filteredMovies.length === 0
+            ? props.savedMovies
+            : filteredMovies
           }
           onCardDelete={props.onCardDelete}
         />
       )}
-      {isSearchSubmitted && notFound && (
+      {notFound && (
         <p className="saved-movies__not-found">Ничего не найдено</p>
       )}
       <Footer />

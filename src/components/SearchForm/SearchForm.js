@@ -40,7 +40,6 @@ function SearchForm(props) {
     }
 
     if (savedMoviesLocation) {
-      props.setIsSearchSubmitted(true);
       props.onSearchSubmitSaved(searchValue);
 
     } else {

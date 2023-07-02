@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 import logo from "../../images/ME-logo.svg";
 import { ERROR_MESSAGE } from "../../utils/constants.js";
 
 function Login(props) {
+
+  const navigate = useNavigate();
+
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
@@ -83,6 +86,10 @@ function Login(props) {
   useEffect(() => {
     setLoginError(props.serverError);
   }, [props.serverError])
+
+  useEffect(() => {
+    props.loggedIn && navigate("/movies", { replace: true });
+  }, [props.loggedIn])
 
   useEffect(() => {
     setLoginError(false);

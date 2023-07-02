@@ -15,7 +15,7 @@ import mainApi from "../../utils/MainApi.js";
 import * as auth from "../../utils/auth.js";
 import ProtectedRouteElement from "../ProtectedRoute/ProtectedRoute.js";
 
-import { filterMovies } from "../../utils/movieFilter.js";
+import { filterMovies, filterSavedMovies } from "../../utils/movieFilter.js";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 import LoggedInContext from "../../contexts/LoggedInContext.js";
 import SavedMoviesContext from "../../contexts/SavedMoviesContext.js";
@@ -50,6 +50,8 @@ function App() {
   const [notFoundSaved, setNotFoundSaved] = useState(false);
 
   const [showConfirmation, setShowConfirmation] = useState(false);
+
+  const [isUnset, setIsUnset] = useState(true)
 
   function handleRegister(name, email, password) {
     setServerError(false);
@@ -100,25 +102,42 @@ function App() {
       });
   }
 
-  function handleLogOut() {
-    setFilteredMovies([]);
-    setShortsState(false);
-    localStorage.clear();
-    document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
+function resetAllStates() {
     setLoggedIn(false);
     setCurrentUser({});
-    navigate("/", { replace: true });
+    setIsSubmitting(false);
+    setShortsState(false);
+    setFilteredMovies([]);
+    setSearchKeywordSaved("");
+    setShortsStateSaved(false);
+    setFilteredSavedMovies([]);
+    setIsNotFound(false);
+    setNotFoundSaved(false);
+    setShowConfirmation(false);
+  }
+
+  function handleLogOut() {
+    mainApi
+      .signout()
+      .then(() => {
+        resetAllStates();
+        localStorage.clear();
+        navigate("/", { replace: true });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function tokenCheck() {
     const token = localStorage.getItem("token");
     if (token) {
+      setLoggedIn(true);
       mainApi
         .getUserInfo()
         .then((userInfo) => {
           if (userInfo) {
             setCurrentUser(userInfo);
-            setLoggedIn(true);
           }
         })
         .catch((err) => {
@@ -181,10 +200,15 @@ function App() {
         setSavedMovies(
           savedMovies.filter((movie) => movie.nameRU !== deletedMovie.nameRU)
         );
+        if (filteredSavedMovies.length !== 0) {
+          setFilteredSavedMovies(
+            filteredSavedMovies.filter((movie) => movie.nameRU !== deletedMovie.nameRU)
+          );
+        }
       })
       .catch((err) => {
         console.log(err);
-      });
+      }); 
   }
 
   function activatePreloader() {
@@ -241,14 +265,27 @@ function App() {
     }
   }
 
+
+
   function handleSearchSubmitSaved(searchValue) {
-    setSearchKeywordSaved(searchValue);
-    const filtered = filterMovies(savedMovies, searchValue, shortsStateSaved);
-    setFilteredSavedMovies(filtered);
-    if (filtered.length === 0) {
-      setNotFoundSaved(true);
-    } else {
-      setNotFoundSaved(false);
+    if (searchValue) {
+      setSearchKeywordSaved(searchValue);
+      const filtered = filterMovies(savedMovies, searchValue, shortsStateSaved);
+      setFilteredSavedMovies(filtered);
+      if (filtered.length === 0) {
+        setNotFoundSaved(true);
+      } else {
+        setNotFoundSaved(false);
+      }
+    }
+    if (!searchValue) {
+      const filtered = filterSavedMovies(savedMovies, shortsStateSaved);
+      setFilteredSavedMovies(filtered);
+      if (filtered.length === 0) {
+        setNotFoundSaved(true);
+      } else {
+        setNotFoundSaved(false);
+      } 
     }
   }
 
@@ -261,12 +298,19 @@ function App() {
     }
   }, [shortsState]);
 
+  function resetSearchKeywordSaved () {
+    setSearchKeywordSaved('');
+  }
+
   //Повторный поиск при переключении чекбокса в сохраненных
   useEffect(() => {
     if (savedMovies && searchKeywordSaved) {
       handleSearchSubmitSaved(searchKeywordSaved);
     }
-  }, [shortsStateSaved]);
+    if (savedMovies && !searchKeywordSaved) {
+      handleSearchSubmitSaved();
+    }
+  }, [shortsStateSaved, savedMovies]);
 
   useEffect(() => {
     tokenCheck();
@@ -297,6 +341,7 @@ function App() {
                   onLogin={handleLogin}
                   isSubmitting={isSubmitting}
                   serverError={serverError}
+                  loggedIn={loggedIn}
                 />
               }
             />
@@ -307,6 +352,7 @@ function App() {
                   onRegister={handleRegister}
                   isSubmitting={isSubmitting}
                   serverError={serverError}
+                  loggedIn={loggedIn}
                 />
               }
             />
@@ -316,15 +362,16 @@ function App() {
               element={
                 <ProtectedRouteElement
                   element={Movies}
+                  loggedIn={loggedIn}
                   movies={filteredMovies}
                   isPreloaderActive={isPreloaderActive}
                   isNotFound={isNotFound}
                   windowWidth={windowWidth}
-                  loggedIn={loggedIn}
                   onCardLike={handleCardLike}
                   onCardDelete={handleCardDelete}
                   onSearchSubmit={handleSearchSubmit}
                   saveShortsState={saveShortsState}
+                  isUnset={isUnset}
                 />
               }
             />
@@ -344,6 +391,8 @@ function App() {
                   searchKeywordSaved={searchKeywordSaved}
                   saveSearchKeyword={saveSearchKeywordSaved}
                   notFoundSaved={notFoundSaved}
+                  resetSearchKeywordSaved={resetSearchKeywordSaved}
+                  isUnset={isUnset}
                 />
               }
             />
@@ -358,6 +407,7 @@ function App() {
                   isSubmitting={isSubmitting}
                   serverError={serverError}
                   showConfirmation={showConfirmation}
+                  isUnset={isUnset}
                 />
               }
             />
