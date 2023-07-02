@@ -71,12 +71,16 @@
 .navigation__list-item {
   font-family: "Inter", "Arial", sans-serif;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 100;
   text-align: center;
   list-style-type: none;
   text-decoration: none;
   margin: auto;
   margin-right: 16px;
+}
+
+.navigation__list-item_active {
+  font-weight: 600;
 }
 
 @media screen and (max-width: 1000px) {
@@ -95,8 +99,11 @@
   }
 }
 
+
+
 @media screen and (max-width: 1000px) {
   .navigation__list-item_active {
+    font-weight: 500;
     border-bottom: solid #000000 2px;
     padding-bottom: 4px;
     margin-bottom: 22px;
@@ -105,6 +112,7 @@
 
 @media screen and (max-width: 561px) {
   .navigation__list-item_active {
+    font-weight: 500;
     margin-bottom: 15px;
   }
 }

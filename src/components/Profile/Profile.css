@@ -27,7 +27,7 @@
   }
 }
 
-.profile__container {
+.profile__form {
   display: flex;
   flex-direction: column;
   max-width: 410px;
@@ -36,22 +36,23 @@
 }
 
 @media screen and (max-width: 1000px) {
-  .profile__container {
+  .profile__form {
     width: calc(100% - 178px * 2);
     margin-top: 96px;
   }
 }
 
 @media screen and (max-width: 561px) {
-  .profile__container {
+  .profile__form {
     width: calc(100% - 30px * 2);
     margin-top: 80px;
   }
 }
 
-.profile__item {
+.profile__label {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-family: "Inter", "Arial", sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -60,46 +61,92 @@
   padding-bottom: 17px;
 }
 
-.profile__item:last-of-type {
+.profile__label:last-of-type {
   border-top: solid #e8e8e8 1px;
   padding: 16px 0 0;
 }
 
-.profile__key {
-  margin: 0;
+.profile__input {
+  border: none;
+  font-family: "Inter", "Arial", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: end;
 }
 
-.profile__value {
-  margin: 0;
+.profile__input:focus {
+  outline: none;
 }
 
-.profile__edit-link {
+.profile__error {
+  font-family: "Inter", "Arial", sans-serif;
+  font-style: normal;
+  font-size: 10px;
+  margin: 6px 0;
+  color: #EE3465;
+  text-align: end;
+}
+
+.profile__server-error {
+  font-family: "Inter", "Arial", sans-serif;
+  font-style: normal;
+  font-size: 14px;
+  color: #ee3465;
+  margin: 10px auto 0;
+}
+
+.profile__confirmation {
+  font-family: "Inter", "Arial", sans-serif;
+  font-style: normal;
+  font-size: 10px;
+  margin: 10px 0;
+  color: #2be080;
+  text-align: center;
+}
+
+.profile__submit {
   font-family: "Inter", "Arial", sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 13px;
   line-height: 16px;
-  margin: 220px 0 0;
+  margin: 220px auto 0;
   color: #000000;
   text-decoration: none;
+  border: none;
+  background-color: unset;
+  padding: 0;
+  width: fit-content;
 }
 
-.profile__edit-link:hover {
+.profile__submit:hover {
   opacity: 0.7;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 1000px) {
-  .profile__edit-link {
+  .profile__submit {
     margin-top: 210px;
   }
 }
 
 @media screen and (max-width: 561px) {
-  .profile__edit-link {
+  .profile__submit {
     font-size: 12px;
     line-height: 15px;
     margin-top: 397px;
   }
+}
+
+.profile__submit_disabled {
+  color: #e8e8e8;
+}
+
+.profile__submit_disabled:hover {
+  cursor: default;
+  opacity: 1;
 }
 
 .profile__logout-link {
@@ -115,6 +162,7 @@
 
 .profile__logout-link:hover {
   opacity: 0.7;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 1000px) {

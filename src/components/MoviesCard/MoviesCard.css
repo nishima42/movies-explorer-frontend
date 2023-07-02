@@ -9,6 +9,14 @@
   cursor: pointer;
 }
 
+.movies-card__link {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
 .movies-card__container {
   display: flex;
   width: calc(100% - 14px * 2);
@@ -58,6 +66,10 @@
 .movies-card__save-icon_active {
   background-color: #2be080;
   background-image: url("../../images/movie-save-icon-active.svg");
+}
+
+.movies-card__save-icon_remove {
+  background-image: url("../../images/movie-save-icon-remove.svg");
 }
 
 .movies-card__save-icon:hover {

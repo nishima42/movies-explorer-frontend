@@ -6,14 +6,14 @@ function MoviesCardList(props) {
   return (
     <section className="movies-cardlist">
       <div className="movies-cardlist__container">
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
+        {props.movies.map((movie, i) => (
+          <MovieCard
+            movie={movie}
+            key={movie.id || movie._id}
+            onCardLike={props.onCardLike}
+            onCardDelete={props.onCardDelete}
+          />
+        ))}
       </div>
     </section>
   );
